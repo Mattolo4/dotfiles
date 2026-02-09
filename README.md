@@ -1,2 +1,2 @@
-# dotfiles
-dotfiles config
+## Dotfiles
+Configuration files for setup.
