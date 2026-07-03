@@ -133,3 +133,26 @@ if [ -f "/opt/pal/$PAL_DISTRO/setup.bash" ]; then
 fi
 
 source ~/pal_scm_utils/bash/.pal_profile
+
+
+# Visp env vars
+export VISP_WS=/home/user/exchange/visp/src
+export VISP_DIR=${VISP_WS}/visp-build
+
+# Pixi path update
+export PATH=$PATH:/home/user/.pixi/bin
+export PATH="/home/user/.pixi/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# opencode
+export PATH=/home/user/.opencode/bin:$PATH
+
+# conda
+export PATH=/opt/conda/bin:$PATH
+complete -C /usr/bin/terraform terraform
+
+# FZF dep
+# eval "$(fzf --bash)"
+# source /usr/share/doc/fzf/examples/key-bindings.bash
+
+echo "no dejes el portatil abierto - IT LOVE"
