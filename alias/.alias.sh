@@ -62,6 +62,7 @@ alias gc='git commit -m'
 alias gs='git status'
 alias gp='git push'
 alias gl='git log --graph --oneline --all'
+alias PULL='pull_branch && pull_main'
 
 #  Wireguard
 alias wu='sudo wg-quick up pal-user-mvi'

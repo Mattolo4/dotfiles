@@ -156,3 +156,53 @@ complete -C /usr/bin/terraform terraform
 # source /usr/share/doc/fzf/examples/key-bindings.bash
 
 echo "no dejes el portatil abierto - IT LOVE"
+
+
+# --- color palette ---
+_C_RESET=$'\033[0m'
+_C_BOLD=$'\033[1m'
+_C_HEAD=$'\033[1;36m'    # cyan (headers)
+_C_BRANCH=$'\033[1;33m'  # yellow (branch names)
+_C_OK=$'\033[0;32m'      # green (success)
+_C_WARN=$'\033[0;33m'    # orange/yellow (warnings)
+_C_ERR=$'\033[0;31m'     # red (errors/skips)
+_C_DIM=$'\033[2m'        # dim (separators)
+
+# Pull from all the repos in the Ws (each on its current branch)
+pull_branch() {
+    local base="${1:-src}"
+    for dir in "$base"/*/; do
+        [ -d "$dir/.git" ] || continue          # skip non-git dirs
+        local pkg branch
+        pkg=$(basename "$dir")
+        branch=$(git -C "$dir" rev-parse --abbrev-ref HEAD 2>/dev/null)
+        printf '\n%s== %-30s%s (%s%s%s)%s\n' \
+            "$_C_HEAD" "$pkg" "$_C_RESET" \
+            "$_C_BRANCH" "$branch" "$_C_RESET" ""
+        if git -C "$dir" pull --ff-only; then
+            printf '   %s✓ up to date%s\n' "$_C_OK" "$_C_RESET"
+        else
+            printf '   %s✗ pull failed (see above)%s\n' "$_C_ERR" "$_C_RESET"
+        fi
+    done
+}
+
+
+# Pull all mains (switch each repo to main, then pull)
+pull_main() {
+    local base="${1:-src}"
+    for dir in "$base"/*/; do
+        [ -d "$dir/.git" ] || continue
+        local pkg
+        pkg=$(basename "$dir")
+        printf '\n%s== %-30s%s\n' "$_C_HEAD" "$pkg" "$_C_RESET"
+        if git -C "$dir" checkout main 2>/dev/null && git -C "$dir" pull --ff-only; then
+            printf '   %s✓ on main, up to date%s\n' "$_C_OK" "$_C_RESET"
+        elif git -C "$dir" checkout humble-devel 2>/dev/null && git -C "$dir" pull --ff-only; then
+            printf '   %s✓ on humble, up to date%s\n' "$_C_OK" "$_C_RESET"
+        else
+            printf '   %s✗ no main/devel branch or checkout/pull failed — skipped%s\n' \
+                "$_C_ERR" "$_C_RESET"
+        fi
+    done
+}
