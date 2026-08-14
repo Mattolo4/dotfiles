@@ -12,8 +12,9 @@ alias aa='code ~/.alias.sh'
 alias bb='code ~/.bashrc'
 alias search='grep -Rn'
 alias dl='dpkg -l | grep '
-alias upd='sudo apt update'
+alias upd='sudo apt update && rosdep update'
 alias upg='sudo apt upgrade'
+alias src='source ~/.bashrc'
 
 # ROBOTS
 alias pro24='ssh pal@tiago-pro-24c -y'
@@ -54,6 +55,7 @@ alias home='ros2 run play_motion2 run_motion home'
 alias gazk='pkill -9 -f '\''.*(ros|gzclient|gzserver).*'\'''
 alias groot2='/home/matteovillani/Groot2/bin/groot2'
 alias plot='ros2 run plotjuggler plotjuggler'
+alias rviz='rviz2 -d ~/exchange/mvi.rviz'
 
 # Git
 alias ga='git add .'
@@ -62,7 +64,8 @@ alias gc='git commit -m'
 alias gs='git status'
 alias gp='git push'
 alias gl='git log --graph --oneline --all'
-alias PULL='pull_branch && pull_main'
+alias PULL='pull_branch . && pull_main .'
+alias release='~/distro/bin/release_repo'
 
 #  Wireguard
 alias wu='sudo wg-quick up pal-user-mvi'

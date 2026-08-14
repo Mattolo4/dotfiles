@@ -195,7 +195,10 @@ pull_main() {
         [ -d "$dir/.git" ] || continue
         local pkg
         pkg=$(basename "$dir")
-        printf '\n%s== %-30s%s\n' "$_C_HEAD" "$pkg" "$_C_RESET"
+        branch=$(git -C "$dir" rev-parse --abbrev-ref HEAD 2>/dev/null)
+        printf '\n%s== %-30s%s (%s%s%s)%s\n' \
+            "$_C_HEAD" "$pkg" "$_C_RESET" \
+            "$_C_BRANCH" "$branch" "$_C_RESET" ""
         if git -C "$dir" checkout main 2>/dev/null && git -C "$dir" pull --ff-only; then
             printf '   %s✓ on main, up to date%s\n' "$_C_OK" "$_C_RESET"
         elif git -C "$dir" checkout humble-devel 2>/dev/null && git -C "$dir" pull --ff-only; then
